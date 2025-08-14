@@ -1,4 +1,3 @@
-import json
 from cryptography.fernet import Fernet
 import os
 
@@ -14,6 +13,6 @@ def Decoder(password):
         key = keyfile.read()
         key = Fernet(key) # str to byte
 
-    DecryptedPassword = key.decrypt(password) 
-    
+    DecryptedPassword = key.decrypt(password).decode()
+
     return DecryptedPassword
