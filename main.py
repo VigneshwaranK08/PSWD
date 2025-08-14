@@ -14,7 +14,7 @@ def addservice(args):
     
     EncryptedPassword = Encoding.Encoder(args.password)
 
-    jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword})
+    jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword.decode()})
 
     with open("Passwords.json",'w') as jsonfile:
         json.dump(jsondata,jsonfile,indent=4)
