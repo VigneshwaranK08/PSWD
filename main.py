@@ -2,6 +2,7 @@ import argparse
 import Encryption.Decoding as Decoding
 import Encryption.Encoding as Encoding
 import json
+from tabulate import tabulate
 
 Parser = argparse.ArgumentParser()
 SubParser = Parser.add_subparsers()
@@ -33,12 +34,18 @@ def listservice(args):
     with open('Passwords.json','rb') as jsonfile:
         jsondata = json.load(jsonfile)
 
-    for dict in jsondata:
-        print(dict['name'])
-        print(dict['field'])
+    PasswordList = []
 
+    for dict in jsondata:
+        temp = {}
+        temp["Name"] = dict['name']
+        temp["Field"] = dict['field']
         DecryptedPassword = Decoding.Decoder(dict['password'])
-        print(DecryptedPassword)
+        temp["Password"] = DecryptedPassword
+
+        PasswordList.append(temp)
+
+    print(tabulate(PasswordList,headers="keys",tablefmt='github'))
 
 ListService = SubParser.add_parser('list')
 ListService.add_argument("list",action="store_true")
