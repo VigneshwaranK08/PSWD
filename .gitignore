@@ -1,2 +1,3 @@
 *.json
 *.key
+Encryption/__pycache__/
