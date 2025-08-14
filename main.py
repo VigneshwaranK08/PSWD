@@ -1,4 +1,5 @@
 import argparse
+import Encryption.Encoding as Encoding
 import json
 
 Parser = argparse.ArgumentParser()
@@ -11,7 +12,9 @@ def addservice(args):
     except:
         jsondata = []
     
-    jsondata.append({"name":args.name,"field":args.field,"password":args.password})
+    EncryptedPassword = Encoding.Encoder(args.password)
+
+    jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword})
 
     with open("Passwords.json",'w') as jsonfile:
         json.dump(jsondata,jsonfile,indent=4)
