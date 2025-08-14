@@ -1,4 +1,5 @@
 import argparse
+import Encryption.Decoding as Decoding
 import Encryption.Encoding as Encoding
 import json
 
@@ -28,7 +29,16 @@ AddService.set_defaults(func=addservice)
 
 
 def listservice(args):
-    pass
+
+    with open('Passwords.json','rb') as jsonfile:
+        jsondata = json.load(jsonfile)
+
+    for dict in jsondata:
+        print(dict['name'])
+        print(dict['field'])
+
+        DecryptedPassword = Decoding.Decoder(dict['password'])
+        print(DecryptedPassword)
 
 ListService = SubParser.add_parser('list')
 ListService.add_argument("list",action="store_true")
