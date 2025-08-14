@@ -25,5 +25,15 @@ AddService.add_argument('-f','--field')
 AddService.add_argument('-p','--password',type=str)
 AddService.set_defaults(func=addservice)
 
+
+
+def listservice(args):
+    pass
+
+ListService = SubParser.add_parser('list')
+ListService.add_argument("list",action="store_true")
+ListService.set_defaults(func=listservice)
+
+
 args = Parser.parse_args()
 args.func(args)
