@@ -11,7 +11,7 @@ def Decoder(password):
 
     with open(abspath('key.key'),'rb') as keyfile:
         key = keyfile.read()
-        key = Fernet(key) # str to byte
+        key = Fernet(key) # byte to fernet
 
     DecryptedPassword = key.decrypt(password).decode()
 

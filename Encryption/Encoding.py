@@ -9,7 +9,7 @@ def abspath(filename):
 def Encoder(password):
     with open(abspath('key.key'),'rb') as keyfile:
         key = keyfile.read()
-        key = Fernet(key) # str object to byte object
+        key = Fernet(key) # byte object Fernet object
 
     EncryptedPassword = key.encrypt(password.encode())
 
