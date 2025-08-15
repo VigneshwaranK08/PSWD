@@ -170,20 +170,22 @@ Reset.add_argument('reset',nargs='*')
 Reset.set_defaults(func=reset)
 
 
-def get(args):
+def getservice(args):
+
     if not CheckMasterStatus():
-        ForcedTrue = SimpleNamespace(unlock=True)
-        unlock(ForcedTrue)
+        ForceUnlockTrue = SimpleNamespace(unlock = True)
+        unlock(ForceUnlockTrue)
 
     with open('Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
-    if CheckMasterStatus() and ( datetime.now() - datetime.fromisoformat(data['LastAct']) ) < timedelta(minutes=3):
+    if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
         
-        ServiceName = args.name
+        ServiceName = args.name[0]
         try:
             with open('Passwords.json','r') as jsonfile:
                 data = json.load(jsonfile)
+
             res = []
             for dict in data:
                 if dict['name'] == ServiceName:
@@ -193,14 +195,17 @@ def get(args):
                     temp['Password'] = Decoding.Decoder(dict['password'])
                     res.append(temp)
             
-            print(tabulate(res,headers='keys',tablefmt='github'))
+            print(tabulate(res,headers="keys",tablefmt='github'))   
             
         except:
             return "File Doesnt exist , Enter a password first"
         
+        with open('Status.json','r') as jsonfile:
+            sdata = json.load(jsonfile)
+
         with open('Status.json','w') as jsonfile:
-            data["LastAct"] = datetime.now().isoformat()
-            json.dump(data,jsonfile,indent=4)
+            sdata["LastAct"] = datetime.now().isoformat()
+            json.dump(sdata,jsonfile,indent=4)
 
     else:
         with open('Status.json','r') as jsonfile:
@@ -215,7 +220,7 @@ def get(args):
 
 Get = SubParser.add_parser('get')
 Get.add_argument('name',nargs=1)
-Get.set_defaults(func=get)
+Get.set_defaults(func=getservice)
 
 args = Parser.parse_args()
 args.func(args)
