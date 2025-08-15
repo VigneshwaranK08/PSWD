@@ -12,11 +12,11 @@ SubParser = Parser.add_subparsers()
 def CheckMasterStatus():
     
     try:
-        with open('Status.json','rb') as jsonfile:
+        with open('Status.json','r') as jsonfile:
             MasterUnlockStatus = json.load(jsonfile)['MasterUnlockStatus']
     
     except:
-        with open('Status.json','wb') as jsonfile:
+        with open('Status.json','w') as jsonfile:
             json.dump({"MasterUnlockStatus": False},jsonfile,indent=4)
         MasterUnlockStatus = False
         
@@ -25,8 +25,8 @@ def CheckMasterStatus():
 def addservice(args):
 
     if not CheckMasterStatus():
-        args = SimpleNamespace(unlock = True)
-        unlock(args)
+        ForceUnlockTrue = SimpleNamespace(unlock = True)
+        unlock(ForceUnlockTrue)
     
     try:
         with open("Passwords.json",'rb') as jsonfile:
@@ -54,8 +54,8 @@ AddService.set_defaults(func=addservice)
 def listservice(args):
 
     if not CheckMasterStatus():
-        args = SimpleNamespace(unlock = True)
-        unlock(args)
+        ForceUnlockTrue = SimpleNamespace(unlock = True)
+        unlock(ForceUnlockTrue)
 
     with open('Passwords.json','rb') as jsonfile:
         jsondata = json.load(jsonfile)
@@ -86,7 +86,7 @@ def unlock(args):
         if len(data) == 1:
             MasterPassword = input("Set Master Password : ")
 
-            with open('Status.json','wb') as jsonfile:
+            with open('Status.json','w') as jsonfile:
                 data["MasterUnlockStatus"] = True
                 data["MasterPassword"] = MasterPassword
                 json.dump(data,jsonfile,indent=4)
