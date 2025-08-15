@@ -5,6 +5,7 @@ import json
 from tabulate import tabulate
 from datetime import datetime, timedelta
 from types import SimpleNamespace
+import os
 
 Parser = argparse.ArgumentParser()
 SubParser = Parser.add_subparsers()
@@ -152,6 +153,16 @@ def unlock(args):
 Unlock = SubParser.add_parser('unlock')
 Unlock.add_argument('unlock',action='store_true')
 Unlock.set_defaults(func=unlock)
+
+
+
+def reset(args):
+    os.remove('Status.json')
+    os.remove('Passwords.json')
+
+Reset = SubParser.add_parser('reset')
+Reset.add_argument('reset',nargs='*')
+Reset.set_defaults(func=reset)
 
 args = Parser.parse_args()
 args.func(args)
