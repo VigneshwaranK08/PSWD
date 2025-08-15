@@ -9,7 +9,7 @@ import os
 
 Parser = argparse.ArgumentParser(prog="PSWD : Password Manager",
                                  description="Manage All your passwords with ease and protection",
-                                 epilog="Don't worry, your passwords are safe. Thank You !")
+                                 epilog="Don't worry, your passwords are safe :). Thank You !")
 SubParser = Parser.add_subparsers(help="All the avaiable Sub-Commands")
 
 def CheckMasterStatus():
@@ -116,7 +116,7 @@ def listservice(args):
         print("To unlock Usage : pswd unlock")
 
 ListService = SubParser.add_parser('list',help="View all your passwords")
-ListService.add_argument("list",action="store_true")
+ListService.add_argument("list",action="store_true",help="View all the information")
 ListService.set_defaults(func=listservice)
 
 
@@ -153,7 +153,7 @@ def unlock(args):
         return
 
 Unlock = SubParser.add_parser('unlock',help="Enter or Create your Master Password ")
-Unlock.add_argument('unlock',action='store_true')
+Unlock.add_argument('unlock',action='store_true',help="If Session expired, Enter your master password to renew your session")
 Unlock.set_defaults(func=unlock)
 
 
@@ -168,7 +168,7 @@ def reset(args):
         print('Data not Deleted')
 
 Reset = SubParser.add_parser('reset',help="Clear all your passwords")
-Reset.add_argument('reset',nargs='*')
+Reset.add_argument('reset',nargs='*',help="Clear all the passwords")
 Reset.set_defaults(func=reset)
 
 
@@ -221,7 +221,7 @@ def getservice(args):
         print("To unlock Usage : pswd unlock")
 
 Get = SubParser.add_parser('get',help="Get the password for the specified Service name")
-Get.add_argument('name',nargs=1)
+Get.add_argument('name',nargs=1,help="Enter the name of the service and get the passwords")
 Get.set_defaults(func=getservice)
 
 args = Parser.parse_args()
