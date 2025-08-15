@@ -28,20 +28,40 @@ def addservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
     
-    try:
-        with open("Passwords.json",'rb') as jsonfile:
-            jsondata = json.load(jsonfile)
-    except:
-        jsondata = []
-    
-    EncryptedPassword = Encoding.Encoder(args.password)
+    with open('Status.json','r') as jsonfile:
+        data = json.load(jsonfile)
 
-    jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword.decode()})
+    if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
+        try:
+            with open("Passwords.json",'rb') as jsonfile:
+                jsondata = json.load(jsonfile)
+        except:
+            jsondata = []
+        
+        EncryptedPassword = Encoding.Encoder(args.password)
 
-    with open("Passwords.json",'w') as jsonfile:
-        json.dump(jsondata,jsonfile,indent=4)
+        jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword.decode()})
+
+        with open("Passwords.json",'w') as jsonfile:
+            json.dump(jsondata,jsonfile,indent=4)
+        
+        print("Password Successfully saved")
+
+        with open('Status.json','w') as jsonfile:
+            data["LastAct"] = datetime.now().isoformat()
+            json.dump(data,jsonfile,indent=4)
     
-    print("Password Successfully saved")
+    else:
+        with open('Status.json','r') as jsonfile:
+            data = json.load(jsonfile)
+
+        with open('Status.json','w') as jsonfile:
+            data["MasterUnlockStatus"] = False
+            json.dump(data,jsonfile,indent=4)
+        
+        print("Session Expired !")
+        print("To unlock Usage : pswd unlock")
+
 
 AddService = SubParser.add_parser("add")
 AddService.add_argument("name")
@@ -84,11 +104,12 @@ def unlock(args):
             data = json.load(jsonfile)
 
         if len(data) == 1:
-            MasterPassword = input("Set Master Password : ")
+            MasterPassword = input("Set New Master Password : ")
 
             with open('Status.json','w') as jsonfile:
                 data["MasterUnlockStatus"] = True
                 data["MasterPassword"] = MasterPassword
+                data["LastAct"] = datetime.now().isoformat()
                 json.dump(data,jsonfile,indent=4)
         
         else:
@@ -101,7 +122,10 @@ def unlock(args):
                     data["MasterUnlockStatus"] = True
 
                 with open('Status.json','wb') as jsonfile:
+                    data["LastAct"] = datetime.now().isoformat()
                     json.dump(data,jsonfile,indent=4)
+                
+                print("Unlocked Successfully")
             
     else:
         return
