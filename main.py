@@ -169,5 +169,53 @@ Reset = SubParser.add_parser('reset')
 Reset.add_argument('reset',nargs='*')
 Reset.set_defaults(func=reset)
 
+
+def get(args):
+    if not CheckMasterStatus():
+        ForcedTrue = SimpleNamespace(unlock=True)
+        unlock(ForcedTrue)
+
+    with open('Status.json','r') as jsonfile:
+        data = json.load(jsonfile)
+
+    if CheckMasterStatus() and ( datetime.now() - datetime.fromisoformat(data['LastAct']) ) < timedelta(minutes=3):
+        
+        ServiceName = args.name
+        try:
+            with open('Passwords.json','r') as jsonfile:
+                data = json.load(jsonfile)
+            res = []
+            for dict in data:
+                if dict['name'] == ServiceName:
+                    temp = {}
+                    temp['Name'] = dict['name']
+                    temp['Field'] = dict['field']
+                    temp['Password'] = Decoding.Decoder(dict['password'])
+                    res.append(temp)
+            
+            print(tabulate(res,headers='keys',tablefmt='github'))
+            
+        except:
+            return "File Doesnt exist , Enter a password first"
+        
+        with open('Status.json','w') as jsonfile:
+            data["LastAct"] = datetime.now().isoformat()
+            json.dump(data,jsonfile,indent=4)
+
+    else:
+        with open('Status.json','r') as jsonfile:
+            data = json.load(jsonfile)
+
+        with open('Status.json','w') as jsonfile:
+            data["MasterUnlockStatus"] = False
+            json.dump(data,jsonfile,indent=4)
+        
+        print("Session Expired !")
+        print("To unlock Usage : pswd unlock")
+
+Get = SubParser.add_parser('get')
+Get.add_argument('name',nargs=1)
+Get.set_defaults(func=get)
+
 args = Parser.parse_args()
 args.func(args)
