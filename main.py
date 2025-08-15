@@ -20,6 +20,8 @@ def addservice(args):
 
     with open("Passwords.json",'w') as jsonfile:
         json.dump(jsondata,jsonfile,indent=4)
+    
+    print("Password Successfully saved")
 
 AddService = SubParser.add_parser("add")
 AddService.add_argument("name")
