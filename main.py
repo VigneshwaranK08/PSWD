@@ -3,6 +3,8 @@ import Encryption.Decoding as Decoding
 import Encryption.Encoding as Encoding
 import json
 from tabulate import tabulate
+from datetime import datetime, timedelta
+from types import SimpleNamespace
 
 Parser = argparse.ArgumentParser()
 SubParser = Parser.add_subparsers()
@@ -21,6 +23,11 @@ def CheckMasterStatus():
     return MasterUnlockStatus
 
 def addservice(args):
+
+    if not CheckMasterStatus:
+        args = SimpleNamespace(unlock = True)
+        unlock(args)
+    
     try:
         with open("Passwords.json",'rb') as jsonfile:
             jsondata = json.load(jsonfile)
@@ -46,6 +53,10 @@ AddService.set_defaults(func=addservice)
 
 def listservice(args):
 
+    if not CheckMasterStatus:
+        args = SimpleNamespace(unlock = True)
+        unlock(args)
+        
     with open('Passwords.json','rb') as jsonfile:
         jsondata = json.load(jsonfile)
 
@@ -76,7 +87,7 @@ def unlock(args):
             MasterPassword = input("Set Master Password : ")
 
             with open('Status.json','wb') as jsonfile:
-                data["MasterUnlockStatus"] = False
+                data["MasterUnlockStatus"] = True
                 data["MasterPassword"] = MasterPassword
                 json.dump(data,jsonfile,indent=4)
         
