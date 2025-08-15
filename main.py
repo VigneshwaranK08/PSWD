@@ -7,8 +7,10 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
 
-Parser = argparse.ArgumentParser()
-SubParser = Parser.add_subparsers()
+Parser = argparse.ArgumentParser(prog="PSWD : Password Manager",
+                                 description="Manage All your passwords with ease and protection",
+                                 epilog="Don't worry, your passwords are safe. Thank You !")
+SubParser = Parser.add_subparsers(help="All the avaiable Sub-Commands")
 
 def CheckMasterStatus():
     
@@ -64,10 +66,10 @@ def addservice(args):
         print("To unlock Usage : pswd unlock")
 
 
-AddService = SubParser.add_parser("add")
+AddService = SubParser.add_parser("add",help="Enter the name of the service for the password")
 AddService.add_argument("name")
-AddService.add_argument('-f','--field')
-AddService.add_argument('-p','--password',type=str)
+AddService.add_argument('-f','--field',help="Enter any other field for the service")
+AddService.add_argument('-p','--password',type=str,help="Enter the password")
 AddService.set_defaults(func=addservice)
 
 
@@ -113,7 +115,7 @@ def listservice(args):
         print("Session Expired !")
         print("To unlock Usage : pswd unlock")
 
-ListService = SubParser.add_parser('list')
+ListService = SubParser.add_parser('list',help="View all your passwords")
 ListService.add_argument("list",action="store_true")
 ListService.set_defaults(func=listservice)
 
@@ -150,7 +152,7 @@ def unlock(args):
     else:
         return
 
-Unlock = SubParser.add_parser('unlock')
+Unlock = SubParser.add_parser('unlock',help="Enter or Create your Master Password ")
 Unlock.add_argument('unlock',action='store_true')
 Unlock.set_defaults(func=unlock)
 
@@ -165,7 +167,7 @@ def reset(args):
     else:
         print('Data not Deleted')
 
-Reset = SubParser.add_parser('reset')
+Reset = SubParser.add_parser('reset',help="Clear all your passwords")
 Reset.add_argument('reset',nargs='*')
 Reset.set_defaults(func=reset)
 
@@ -218,7 +220,7 @@ def getservice(args):
         print("Session Expired !")
         print("To unlock Usage : pswd unlock")
 
-Get = SubParser.add_parser('get')
+Get = SubParser.add_parser('get',help="Get the password for the specified Service name")
 Get.add_argument('name',nargs=1)
 Get.set_defaults(func=getservice)
 
