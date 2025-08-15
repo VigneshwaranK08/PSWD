@@ -24,7 +24,7 @@ def CheckMasterStatus():
 
 def addservice(args):
 
-    if not CheckMasterStatus:
+    if not CheckMasterStatus():
         args = SimpleNamespace(unlock = True)
         unlock(args)
     
@@ -53,10 +53,10 @@ AddService.set_defaults(func=addservice)
 
 def listservice(args):
 
-    if not CheckMasterStatus:
+    if not CheckMasterStatus():
         args = SimpleNamespace(unlock = True)
         unlock(args)
-        
+
     with open('Passwords.json','rb') as jsonfile:
         jsondata = json.load(jsonfile)
 
