@@ -157,8 +157,13 @@ Unlock.set_defaults(func=unlock)
 
 
 def reset(args):
-    os.remove('Status.json')
-    os.remove('Passwords.json')
+    confirm = input("Reset will cause all the existing data to be deleted permanently (y/n) : ")
+    if confirm == 'y':
+        os.remove('Status.json')
+        os.remove('Passwords.json')
+        print('Data Deleted')
+    else:
+        print('Data not Deleted')
 
 Reset = SubParser.add_parser('reset')
 Reset.add_argument('reset',nargs='*')
