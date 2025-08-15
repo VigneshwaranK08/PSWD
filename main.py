@@ -7,6 +7,19 @@ from tabulate import tabulate
 Parser = argparse.ArgumentParser()
 SubParser = Parser.add_subparsers()
 
+def CheckMasterStatus():
+    
+    try:
+        with open('Status.json','rb') as jsonfile:
+            MasterUnlockStatus = json.load(jsonfile)['MasterUnlockStatus']
+    
+    except:
+        with open('Status.json','wb') as jsonfile:
+            json.dump({"MasterUnlockStatus": False},jsonfile,indent=4)
+        MasterUnlockStatus = False
+        
+    return MasterUnlockStatus
+
 def addservice(args):
     try:
         with open("Passwords.json",'rb') as jsonfile:
@@ -53,6 +66,38 @@ ListService = SubParser.add_parser('list')
 ListService.add_argument("list",action="store_true")
 ListService.set_defaults(func=listservice)
 
+
+def unlock(args):
+    if args.unlock:
+        with open('Status.json','rb') as jsonfile:
+            data = json.load(jsonfile)
+
+        if len(data) == 1:
+            MasterPassword = input("Set Master Password : ")
+
+            with open('Status.json','wb') as jsonfile:
+                data["MasterUnlockStatus"] = False
+                data["MasterPassword"] = MasterPassword
+                json.dump(data,jsonfile,indent=4)
+        
+        else:
+            Input = input("Enter Master password : ")
+
+            if data["MasterPassword"] == Input:
+
+                with open('Status.json','rb') as jsonfile:
+                    data = json.load(jsonfile)
+                    data["MasterUnlockStatus"] = True
+
+                with open('Status.json','wb') as jsonfile:
+                    json.dump(data,jsonfile,indent=4)
+            
+    else:
+        return
+
+Unlock = SubParser.add_parser('unlock')
+Unlock.add_argument('unlock',action='store_true')
+Unlock.set_defaults(func=unlock)
 
 args = Parser.parse_args()
 args.func(args)
