@@ -77,21 +77,40 @@ def listservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
 
-    with open('Passwords.json','rb') as jsonfile:
-        jsondata = json.load(jsonfile)
+    with open('Status.json','r') as jsonfile:
+        data = json.load(jsonfile)
 
-    PasswordList = []
+    if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
+        with open('Passwords.json','rb') as jsonfile:
+            jsondata = json.load(jsonfile)
 
-    for dict in jsondata:
-        temp = {}
-        temp["Name"] = dict['name']
-        temp["Field"] = dict['field']
-        DecryptedPassword = Decoding.Decoder(dict['password'])
-        temp["Password"] = DecryptedPassword
+        PasswordList = []
 
-        PasswordList.append(temp)
+        for dict in jsondata:
+            temp = {}
+            temp["Name"] = dict['name']
+            temp["Field"] = dict['field']
+            DecryptedPassword = Decoding.Decoder(dict['password'])
+            temp["Password"] = DecryptedPassword
 
-    print(tabulate(PasswordList,headers="keys",tablefmt='github'))
+            PasswordList.append(temp)
+
+        print(tabulate(PasswordList,headers="keys",tablefmt='github'))
+
+        with open('Status.json','w') as jsonfile:
+            data["LastAct"] = datetime.now().isoformat()
+            json.dump(data,jsonfile,indent=4)
+    
+    else:
+        with open('Status.json','r') as jsonfile:
+            data = json.load(jsonfile)
+
+        with open('Status.json','w') as jsonfile:
+            data["MasterUnlockStatus"] = False
+            json.dump(data,jsonfile,indent=4)
+        
+        print("Session Expired !")
+        print("To unlock Usage : pswd unlock")
 
 ListService = SubParser.add_parser('list')
 ListService.add_argument("list",action="store_true")
@@ -117,11 +136,11 @@ def unlock(args):
 
             if data["MasterPassword"] == Input:
 
-                with open('Status.json','rb') as jsonfile:
+                with open('Status.json','r') as jsonfile:
                     data = json.load(jsonfile)
                     data["MasterUnlockStatus"] = True
 
-                with open('Status.json','wb') as jsonfile:
+                with open('Status.json','w') as jsonfile:
                     data["LastAct"] = datetime.now().isoformat()
                     json.dump(data,jsonfile,indent=4)
                 
