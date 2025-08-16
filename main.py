@@ -42,7 +42,7 @@ def addservice(args):
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
         try:
-            with open("Passwords.json",'rb') as jsonfile:
+            with open(f"{AppPath}/Passwords.json",'rb') as jsonfile:
                 jsondata = json.load(jsonfile)
         except:
             jsondata = []
@@ -51,7 +51,7 @@ def addservice(args):
 
         jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword.decode()})
 
-        with open("Passwords.json",'w') as jsonfile:
+        with open(f"{AppPath}/Passwords.json",'w') as jsonfile:
             json.dump(jsondata,jsonfile,indent=4)
         
         print("Password Successfully saved")
