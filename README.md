@@ -16,26 +16,23 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 
 ## 📦 Installation :
 
-clone this repo at ~/.local/bin/
+clone this repo 
 
 ```
-> git clone https://VigneshwaranK08//pswd.git
-> cd pswd/
-> mv pswd.py ~/.local/bin/pswd  
-> cd ..
-> chmod +x pswd 
+> git clone https://VigneshwaranK08//PSWD.git
 ```
+
 ## How to Use :
 
 ```
-> pswd add <ServiceName> -f <AnyField> -p <Password>  # add a Password
+> python3 main.py add <ServiceName> -f <AnyField> -p <Password>  # add a Password
 
-> pswd list # View all the services
+> python3 main.py list # View all the services
 
-> pswd get <ServiceName> # Get the password for the specified ServiceName
+> python3 main.py get <ServiceName> # Get the password for the specified ServiceName
 
-> pswd unlock # Unlock with Master Password to continue using the app
+> python3 main.py unlock # Unlock with Master Password to continue using the app
 
-> pswd reset # Caution ! Deletes all the passwords (including Master password) and all the Service's
+> python3 main.py reset # Caution ! Deletes all the passwords (including Master password) and all the Service's
 
 ```
