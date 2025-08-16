@@ -14,7 +14,7 @@ try:
 except FileExistsError:
     pass
 
-Parser = argparse.ArgumentParser(prog="CipherShell : Password Manager",
+Parser = argparse.ArgumentParser(prog="PSWD : Password Manager",
                                  description="Manage All your passwords with ease and protection",
                                  epilog="Don't worry, your passwords are safe :). Thank You !")
 SubParser = Parser.add_subparsers(help="All the avaiable Sub-Commands")
