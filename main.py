@@ -1,18 +1,11 @@
-#!/usr/bin/env python3
 import argparse
-import PSWD.Encryption.Decoding as Decoding
-import PSWD.Encryption.Encoding as Encoding
+import Encryption.Decoding as Decoding
+import Encryption.Encoding as Encoding
 import json
 from tabulate import tabulate
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
-
-AppPath = os.path.expanduser('~/.local/share/PSWD')
-try:
-    os.mkdir(AppPath)
-except FileExistsError:
-    pass
 
 Parser = argparse.ArgumentParser(prog="PSWD : Password Manager",
                                  description="Manage All your passwords with ease and protection",
@@ -22,11 +15,11 @@ SubParser = Parser.add_subparsers(help="All the avaiable Sub-Commands")
 def CheckMasterStatus():
     
     try:
-        with open(f'{AppPath}/Status.json','r') as jsonfile:
+        with open('Status.json','r') as jsonfile:
             MasterUnlockStatus = json.load(jsonfile)['MasterUnlockStatus']
     
     except:
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             json.dump({"MasterUnlockStatus": False},jsonfile,indent=4)
         MasterUnlockStatus = False
         
@@ -38,12 +31,12 @@ def addservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
     
-    with open(f'{AppPath}/Status.json','r') as jsonfile:
+    with open(f'Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
         try:
-            with open(f"{AppPath}/Passwords.json",'rb') as jsonfile:
+            with open(f"Passwords.json",'rb') as jsonfile:
                 jsondata = json.load(jsonfile)
         except:
             jsondata = []
@@ -52,20 +45,20 @@ def addservice(args):
 
         jsondata.append({"name":args.name,"field":args.field,"password":EncryptedPassword.decode()})
 
-        with open(f"{AppPath}/Passwords.json",'w') as jsonfile:
+        with open(f"Passwords.json",'w') as jsonfile:
             json.dump(jsondata,jsonfile,indent=4)
         
         print("Password Successfully saved")
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             data["LastAct"] = datetime.now().isoformat()
             json.dump(data,jsonfile,indent=4)
     
     else:
-        with open(f'{AppPath}/Status.json','r') as jsonfile:
+        with open(f'Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
@@ -87,11 +80,11 @@ def listservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
 
-    with open(f'{AppPath}/Status.json','r') as jsonfile:
+    with open(f'Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
-        with open(f'{AppPath}/Passwords.json','rb') as jsonfile:
+        with open(f'Passwords.json','rb') as jsonfile:
             jsondata = json.load(jsonfile)
 
         PasswordList = []
@@ -107,15 +100,15 @@ def listservice(args):
 
         print(tabulate(PasswordList,headers="keys",tablefmt='github'))
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             data["LastAct"] = datetime.now().isoformat()
             json.dump(data,jsonfile,indent=4)
     
     else:
-        with open(f'{AppPath}/Status.json','r') as jsonfile:
+        with open(f'Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
@@ -129,13 +122,13 @@ ListService.set_defaults(func=listservice)
 
 def unlock(args):
     if args.unlock:
-        with open(f'{AppPath}/Status.json','rb') as jsonfile:
+        with open(f'Status.json','rb') as jsonfile:
             data = json.load(jsonfile)
 
         if len(data) == 1:
             MasterPassword = input("Set New Master Password : ")
 
-            with open(f'{AppPath}/Status.json','w') as jsonfile:
+            with open(f'Status.json','w') as jsonfile:
                 data["MasterUnlockStatus"] = True
                 data["MasterPassword"] = MasterPassword
                 data["LastAct"] = datetime.now().isoformat()
@@ -146,11 +139,11 @@ def unlock(args):
 
             if data["MasterPassword"] == Input:
 
-                with open(f'{AppPath}/Status.json','r') as jsonfile:
+                with open(f'Status.json','r') as jsonfile:
                     data = json.load(jsonfile)
                     data["MasterUnlockStatus"] = True
 
-                with open(f'{AppPath}/Status.json','w') as jsonfile:
+                with open(f'Status.json','w') as jsonfile:
                     data["LastAct"] = datetime.now().isoformat()
                     json.dump(data,jsonfile,indent=4)
                 
@@ -168,8 +161,8 @@ Unlock.set_defaults(func=unlock)
 def reset(args):
     confirm = input("Reset will cause all the existing data to be deleted permanently (y/n) : ")
     if confirm == 'y':
-        os.remove(f'{AppPath}/Status.json')
-        os.remove(f'{AppPath}/Passwords.json')
+        os.remove(f'Status.json')
+        os.remove(f'Passwords.json')
         print('Data Deleted')
     else:
         print('Data not Deleted')
@@ -185,14 +178,14 @@ def getservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
 
-    with open(f'{AppPath}/Status.json','r') as jsonfile:
+    with open(f'Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
         
         ServiceName = args.name[0]
         try:
-            with open(f'{AppPath}/Passwords.json','r') as jsonfile:
+            with open(f'Passwords.json','r') as jsonfile:
                 data = json.load(jsonfile)
 
             res = []
@@ -209,18 +202,18 @@ def getservice(args):
         except:
             return "File Doesnt exist , Enter a password first"
         
-        with open(f'{AppPath}/Status.json','r') as jsonfile:
+        with open(f'Status.json','r') as jsonfile:
             sdata = json.load(jsonfile)
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             sdata["LastAct"] = datetime.now().isoformat()
             json.dump(sdata,jsonfile,indent=4)
 
     else:
-        with open(f'{AppPath}/Status.json','r') as jsonfile:
+        with open(f'Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open(f'{AppPath}/Status.json','w') as jsonfile:
+        with open(f'Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
