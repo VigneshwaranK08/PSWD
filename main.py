@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import argparse
-import Encryption.Decoding as Decoding
-import Encryption.Encoding as Encoding
+import PSWD.Encryption.Decoding as Decoding
+import PSWD.Encryption.Encoding as Encoding
 import json
 from tabulate import tabulate
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
 
-AppPath = os.path.expanduser('~/.local/share/pswd')
+AppPath = os.path.expanduser('~/.local/share/PSWD')
 try:
     os.mkdir(AppPath)
 except FileExistsError:
