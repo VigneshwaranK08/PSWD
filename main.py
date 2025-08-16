@@ -7,6 +7,12 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
 
+AppPath = os.path.expanduser('~/.local/share/pswd')
+try:
+    os.mkdir(AppPath)
+except FileExistsError:
+    pass
+
 Parser = argparse.ArgumentParser(prog="PSWD : Password Manager",
                                  description="Manage All your passwords with ease and protection",
                                  epilog="Don't worry, your passwords are safe :). Thank You !")
@@ -15,11 +21,11 @@ SubParser = Parser.add_subparsers(help="All the avaiable Sub-Commands")
 def CheckMasterStatus():
     
     try:
-        with open('Status.json','r') as jsonfile:
+        with open(f'{AppPath}/Status.json','r') as jsonfile:
             MasterUnlockStatus = json.load(jsonfile)['MasterUnlockStatus']
     
     except:
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             json.dump({"MasterUnlockStatus": False},jsonfile,indent=4)
         MasterUnlockStatus = False
         
@@ -31,7 +37,7 @@ def addservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
     
-    with open('Status.json','r') as jsonfile:
+    with open(f'{AppPath}/Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
@@ -50,15 +56,15 @@ def addservice(args):
         
         print("Password Successfully saved")
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             data["LastAct"] = datetime.now().isoformat()
             json.dump(data,jsonfile,indent=4)
     
     else:
-        with open('Status.json','r') as jsonfile:
+        with open(f'{AppPath}/Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
@@ -80,11 +86,11 @@ def listservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
 
-    with open('Status.json','r') as jsonfile:
+    with open(f'{AppPath}/Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
-        with open('Passwords.json','rb') as jsonfile:
+        with open(f'{AppPath}/Passwords.json','rb') as jsonfile:
             jsondata = json.load(jsonfile)
 
         PasswordList = []
@@ -100,15 +106,15 @@ def listservice(args):
 
         print(tabulate(PasswordList,headers="keys",tablefmt='github'))
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             data["LastAct"] = datetime.now().isoformat()
             json.dump(data,jsonfile,indent=4)
     
     else:
-        with open('Status.json','r') as jsonfile:
+        with open(f'{AppPath}/Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
@@ -122,13 +128,13 @@ ListService.set_defaults(func=listservice)
 
 def unlock(args):
     if args.unlock:
-        with open('Status.json','rb') as jsonfile:
+        with open(f'{AppPath}/Status.json','rb') as jsonfile:
             data = json.load(jsonfile)
 
         if len(data) == 1:
             MasterPassword = input("Set New Master Password : ")
 
-            with open('Status.json','w') as jsonfile:
+            with open(f'{AppPath}/Status.json','w') as jsonfile:
                 data["MasterUnlockStatus"] = True
                 data["MasterPassword"] = MasterPassword
                 data["LastAct"] = datetime.now().isoformat()
@@ -139,11 +145,11 @@ def unlock(args):
 
             if data["MasterPassword"] == Input:
 
-                with open('Status.json','r') as jsonfile:
+                with open(f'{AppPath}/Status.json','r') as jsonfile:
                     data = json.load(jsonfile)
                     data["MasterUnlockStatus"] = True
 
-                with open('Status.json','w') as jsonfile:
+                with open(f'{AppPath}/Status.json','w') as jsonfile:
                     data["LastAct"] = datetime.now().isoformat()
                     json.dump(data,jsonfile,indent=4)
                 
@@ -178,14 +184,14 @@ def getservice(args):
         ForceUnlockTrue = SimpleNamespace(unlock = True)
         unlock(ForceUnlockTrue)
 
-    with open('Status.json','r') as jsonfile:
+    with open(f'{AppPath}/Status.json','r') as jsonfile:
         data = json.load(jsonfile)
 
     if CheckMasterStatus() and (datetime.now() - datetime.fromisoformat(data["LastAct"])) < timedelta(minutes=3):
         
         ServiceName = args.name[0]
         try:
-            with open('Passwords.json','r') as jsonfile:
+            with open(f'{AppPath}/Passwords.json','r') as jsonfile:
                 data = json.load(jsonfile)
 
             res = []
@@ -202,18 +208,18 @@ def getservice(args):
         except:
             return "File Doesnt exist , Enter a password first"
         
-        with open('Status.json','r') as jsonfile:
+        with open(f'{AppPath}/Status.json','r') as jsonfile:
             sdata = json.load(jsonfile)
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             sdata["LastAct"] = datetime.now().isoformat()
             json.dump(sdata,jsonfile,indent=4)
 
     else:
-        with open('Status.json','r') as jsonfile:
+        with open(f'{AppPath}/Status.json','r') as jsonfile:
             data = json.load(jsonfile)
 
-        with open('Status.json','w') as jsonfile:
+        with open(f'{AppPath}/Status.json','w') as jsonfile:
             data["MasterUnlockStatus"] = False
             json.dump(data,jsonfile,indent=4)
         
