@@ -10,7 +10,7 @@ import os
 
 path = os.path.expanduser("/.local/share/pswd")
 try:
-    os.mkdir(fr"{path}")
+    os.mkdir(f"{path}")
 except FileExistsError:
     pass
 
