@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
 
-path = os.path.expanduser("/.local/share/pswd")
+path = os.path.expanduser("~/.local/share/pswd")
 try:
     os.mkdir(f"{path}")
 except FileExistsError:
