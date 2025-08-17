@@ -1,4 +1,4 @@
-# 🔐  PSWD - A Simple CLI Password 
+# 🔐  PSWD - A Simple CLI Password Manager
 
 PSWD is a lightweight **command-line password manager** written in Python (Based on Linux Filesystem).  
 It allows you to **add, unlock, get, reset, and list** your stored credentials, all with session-based security.  
@@ -37,4 +37,19 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 
 > pswd reset # Caution ! Deletes all the passwords (including Master password) and all the Service's
 
+```
+
+## Project Structure 📂:
+
+```
+pswd/
+|-- Encryption/
+|   |-- Decoding.py
+|   |-- Encoding.py
+|   |-- key.key
+|   |-- KeyGen.py
+|-- main.py
+|-- README.md
+|-- .gitignore
+|-- LICENSE
 ```
