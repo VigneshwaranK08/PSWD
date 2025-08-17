@@ -23,7 +23,7 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 ```
 > git clone https://VigneshwaranK08//PSWD.git
 > chmod +x main.py # ( after > cd PSWD)
-> sudo ln -s <path where u cloned>/PSWD ~/.local/bin/pswd
+> sudo ln -s <path where u cloned>/PSWD/main.py ~/.local/bin/pswd
 ```
 
 ## How to Use :
