@@ -17,10 +17,12 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 ## 📦 Installation :
 
 1. clone this repo anywhere
-2. create a Symlink of this repo to ~/.local/bin
+2. Give executable permission
+3. create a Symlink of this repo to ~/.local/bin
 
 ```
 > git clone https://VigneshwaranK08//PSWD.git
+> chmod +x main.py # ( after > cd PSWD)
 > sudo ln -s <path where u cloned> ~/.local/bin/pswd
 ```
 
