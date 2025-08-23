@@ -42,11 +42,11 @@ git clone https://github.com/VigneshwaranK08/PSWD.git
 ```
 
 ## How to Use :
-
-Note : Add python3 before pswd in every command (For <img src= "https://www.logo.wine/a/logo/Microsoft_Windows/Microsoft_Windows-Logo.wine.svg"
+<img src= "https://www.logo.wine/a/logo/Microsoft_Windows/Microsoft_Windows-Logo.wine.svg"
 height="70"
 width="auto"
-style="vertical-align:middle;" />)
+style="vertical-align:middle;" />
+Note : Add python3 before pswd in every command 
 
 ```
 > pswd add <ServiceName> -f <AnyField> -p <Password>  # add a Password
