@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)](https://www.python.org/)  
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)  
 
-PSWD is a lightweight **command-line password manager** written in Python (Based on Linux Filesystem).  
+PSWD is a lightweight **command-line password manager** written in Python (Based on Windows and Linux Filesystem).  
 It allows you to **add, unlock, get, reset, and list** your stored credentials, all with session-based security.  
 
 Passwords are encrypted using [Fernet (cryptography)](https://cryptography.io/en/latest/) and stored locally.  
