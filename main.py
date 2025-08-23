@@ -7,8 +7,15 @@ from tabulate import tabulate
 from datetime import datetime, timedelta
 from types import SimpleNamespace
 import os
+import platform
 
-path = os.path.expanduser("~/.local/share/pswd")
+if platform.system() == 'Windows':
+    path = os.path.expandvars(r'%AppData%/pswd')
+elif platform.system() == 'Linux':
+    path = os.path.expanduser("~/.local/share/pswd")
+else:
+    path = None
+    
 try:
     os.mkdir(f"{path}")
 except FileExistsError:
