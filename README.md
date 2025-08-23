@@ -19,17 +19,34 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 
 ## 📦 Installation :
 
+<img src = "https://www.logo.wine/a/logo/Linux/Linux-Logo.wine.svg"
+width = "auto"
+height = "50"
+style="vertical-align:middle;" />
 1. clone this repo anywhere
 2. Give executable permission
 3. create a Symlink of this repo to ~/.local/bin
-
 ```
 > git clone https://VigneshwaranK08//PSWD.git
 > chmod +x main.py # ( after > cd PSWD)
 > sudo ln -s <path where u cloned>/PSWD/main.py ~/.local/bin/pswd
 ```
+<img src= "https://www.logo.wine/a/logo/Microsoft_Windows/Microsoft_Windows-Logo.wine.svg"
+height="70"
+width="auto"
+style="vertical-align:middle;" />
+1. Clone this repo anywhere
+
+```
+git clone https://github.com/VigneshwaranK08/PSWD.git
+```
 
 ## How to Use :
+
+Note : Add python3 before pswd in every command (For <img src= "https://www.logo.wine/a/logo/Microsoft_Windows/Microsoft_Windows-Logo.wine.svg"
+height="70"
+width="auto"
+style="vertical-align:middle;" />)
 
 ```
 > pswd add <ServiceName> -f <AnyField> -p <Password>  # add a Password
