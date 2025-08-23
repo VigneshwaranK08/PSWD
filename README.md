@@ -26,10 +26,12 @@ style="vertical-align:middle;" />
 1. clone this repo anywhere
 2. Give executable permission
 3. create a Symlink of this repo to ~/.local/bin
+4. Install tabulate module
 ```
 > git clone https://VigneshwaranK08//PSWD.git
 > chmod +x main.py # ( after > cd PSWD)
 > sudo ln -s <path where u cloned>/PSWD/main.py ~/.local/bin/pswd
+> pip install tabulate
 ```
 <img src= "https://www.logo.wine/a/logo/Microsoft_Windows/Microsoft_Windows-Logo.wine.svg"
 height="70"
