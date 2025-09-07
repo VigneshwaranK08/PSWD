@@ -44,7 +44,6 @@ style="vertical-align:middle;" />
 1. Clone this repo anywhere
 
 ```
-pip install tabulate
 git clone https://github.com/VigneshwaranK08/PSWD.git
 ```
 
