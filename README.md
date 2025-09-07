@@ -19,6 +19,10 @@ Your session automatically expires after inactivity, requiring you to unlock aga
 
 ## 📦 Installation :
 
+```
+pip install tabulate
+pip install cryptography
+```
 <img src = "https://www.logo.wine/a/logo/Linux/Linux-Logo.wine.svg"
 width = "auto"
 height = "50"
